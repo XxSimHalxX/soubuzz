@@ -873,21 +873,56 @@ section {
   align-items: center;
 }
 
-.gallery-showcase {
+.gallery-showcase.hexagon-mascot-container {
   position: relative;
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  border: 1px solid rgba(255,184,0,0.25);
-  background: var(--bg-tertiary);
-  aspect-ratio: 4/5;
-  box-shadow: 0 25px 55px rgba(0,0,0,0.5);
+  width: 100%;
+  aspect-ratio: 1; /* Aspect ratio quadrado para o hexágono perfeito */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible; /* Permite que o glow vaze */
 }
 
-.gallery-showcase img {
+.hexagon-mascot-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: var(--transition-smooth);
+  background: var(--bg-tertiary);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  z-index: 1;
+  /* Um degradê interno simulando o favo */
+  background: linear-gradient(135deg, rgba(255, 184, 0, 0.15) 0%, rgba(6, 7, 10, 0.9) 100%);
+  border: 2px solid rgba(255, 184, 0, 0.3); /* Será ocultado pelo clip-path, então usamos filter no pai */
+}
+
+/* Efeito de brilho que respeita a forma hexagonal */
+.gallery-showcase.hexagon-mascot-container::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, transparent 100%);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  z-index: 0;
+  filter: blur(10px);
+  opacity: 0.6;
+}
+
+.hexagon-mascot-img {
+  position: relative;
+  z-index: 2;
+  width: 90%; /* Deixa o mascote contido no favo */
+  height: 90%;
+  object-fit: contain;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hexagon-mascot-container:hover .hexagon-mascot-img {
+  transform: scale(1.08) translateY(-10px);
 }
 
 .gallery-nav {
@@ -1097,7 +1132,7 @@ section {
 /* Botão Voltar ao Topo (Modo Colmeia Glow) */
 .back-to-top {
   position: fixed;
-  bottom: 2rem;
+  bottom: calc(2rem + 65px);
   right: 2rem;
   width: 50px;
   height: 50px;
@@ -1129,6 +1164,42 @@ section {
   color: #000000;
   border-color: var(--accent-primary);
   box-shadow: 0 0 20px rgba(255, 184, 0, 0.4);
+  transform: translateY(-5px);
+}
+
+/* Botão Flutuante do WhatsApp */
+.whatsapp-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: #25D366; /* Cor oficial do WhatsApp */
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+  text-decoration: none;
+}
+
+.whatsapp-float.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.whatsapp-float:hover {
+  background: #1EBE5D;
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
   transform: translateY(-5px);
 }
 
@@ -1198,22 +1269,37 @@ section {
 }
 
 .social-link {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.02);
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animação elástica */
 }
 
 .social-link:hover {
-  background: var(--accent-primary);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #ff8c00 100%);
   color: #000000;
-  border-color: var(--accent-primary);
-  transform: translateY(-4px);
+  transform: translateY(-5px) scale(1.15);
+  /* O drop-shadow respeita o formato do clip-path, diferente do box-shadow */
+  filter: drop-shadow(0px 8px 12px rgba(255, 184, 0, 0.5));
+}
+
+.social-link i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin-top: 1px; /* Ajuste óptico fino */
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.social-link:hover i {
+  color: #000000;
+  transform: scale(1.2) rotate(360deg);
 }
 
 /* --- ANIMAÇÕES --- */

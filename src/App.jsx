@@ -642,11 +642,9 @@ function App() {
       <section className="quem-somos" id="quem-somos" ref={quemSomosRef}>
         <div className="container">
           <div className="about-gallery-grid">
-            <div className="gallery-showcase">
-              {/* Mascote Buzz com recortes em hexágono equilátero perfeito */}
-              <div className="metodo-step-visual-container" style={{ border: '2px solid rgba(255, 184, 0, 0.35)', padding: '15px' }}>
-                <img src={mascoteBuzz} alt="Mascote Somos Buzz" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              </div>
+            <div className="gallery-showcase hexagon-mascot-container">
+              <div className="hexagon-mascot-bg"></div>
+              <img src={mascoteBuzz} alt="Mascote Somos Buzz" className="hexagon-mascot-img" />
             </div>
 
             <div className="dna-content">
@@ -655,13 +653,13 @@ function App() {
                 Muito mais que tráfego. Somos inteligência em vendas.
               </h2>
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
-                A **Somos Buzz** é liderada por especialistas focados em performance comercial. Entendemos que tráfego sem um processo de vendas bem estruturado é desperdício. Por isso, criamos ecossistemas completos para transformar leads em vendas todos os dias.
+                A <strong>Somos Buzz</strong> é liderada por especialistas focados em performance comercial. Entendemos que tráfego sem um processo de vendas bem estruturado é desperdício. Por isso, criamos ecossistemas completos para transformar leads em vendas todos os dias.
               </p>
               <div className="dna-features">
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Foco Total em ROI</div>
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Tecnologia e Inovação em IA</div>
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Relatórios 100% Transparentes</div>
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Parceria Estratégica Ponta a Ponta</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Foco Total em ROI</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Tecnologia e Inovação em IA</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Relatórios 100% Transparentes</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Parceria Estratégica Ponta a Ponta</div>
               </div>
             </div>
           </div>
@@ -696,14 +694,14 @@ function App() {
                   </div>
                   <div className="channel-details">
                     <h4>WhatsApp de Atendimento</h4>
-                    <p>+55 (11) 99999-9999</p>
+                    <p>+55 (34) 9928-3020</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="contact-form-wrapper">
-              <form id="contact-form" onSubmit={handleFormSubmit} autocomplete="off">
+              <form id="contact-form" onSubmit={handleFormSubmit} autoComplete="off">
                 
                 {/* Passo 1: Informações Pessoais */}
                 <div className={`form-step ${formStep === 1 ? 'active' : ''}`}>
@@ -862,9 +860,9 @@ function App() {
             <div className="footer-links-col">
               <h4>Redes Sociais</h4>
               <div className="social-links">
-                <a href="#" className="social-link" aria-label="Instagram"><i className="ri-instagram-line" style={{fontSize: '18px'}}></i></a>
+                <a href="https://www.instagram.com/somosbuzzmkt/" target="_blank" rel="noreferrer" className="social-link" aria-label="Instagram"><i className="ri-instagram-line" style={{fontSize: '18px'}}></i></a>
                 <a href="#" className="social-link" aria-label="LinkedIn"><i className="ri-linkedin-fill" style={{fontSize: '18px'}}></i></a>
-                <a href="#" className="social-link" aria-label="WhatsApp"><i className="ri-whatsapp-line" style={{fontSize: '18px'}}></i></a>
+                <a href="https://wa.me/553499283020" target="_blank" rel="noreferrer" className="social-link" aria-label="WhatsApp"><i className="ri-whatsapp-line" style={{fontSize: '18px'}}></i></a>
               </div>
             </div>
           </div>
@@ -900,6 +898,17 @@ function App() {
       >
         <ArrowUp size={20} />
       </button>
+
+      {/* Botão Flutuante do WhatsApp */}
+      <a 
+        href="https://wa.me/553499283020"
+        target="_blank"
+        rel="noreferrer"
+        className={`whatsapp-float ${showBackToTop ? 'visible' : ''}`}
+        aria-label="Falar no WhatsApp"
+      >
+        <i className="ri-whatsapp-line" style={{ fontSize: '24px' }}></i>
+      </a>
     </>
   );
 }
