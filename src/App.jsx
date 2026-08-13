@@ -15,6 +15,8 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Sparkles,
   Zap,
   Users,
@@ -32,7 +34,6 @@ gsap.registerPlugin(ScrollTrigger);
 // Importação dos logos oficiais e assets
 import logoBuzzMkt from './assets/icone_buzz.png';
 import mascoteBuzz from './assets/mascote_buzz.png';
-import paletaBuzz from './assets/paleta_buzz.png';
 
 // Importação das partes do Método Colmeia (Fatias do Drive)
 import parte12 from './assets/parte_1_2.png';
@@ -47,10 +48,13 @@ import planoSemente from './assets/plano_semente.jpg';
 import planoSafra from './assets/plano_safra.jpg';
 import planoColheita from './assets/plano_colheita.jpg';
 
-// Importação dos Diferenciais
+// Importação dos Diferenciais / Serviços
 import imgIA from './assets/inteligencia_artificial.jpg';
 import imgCrm from './assets/crm.jpg';
 import imgMarketing from './assets/marketing_estrategico.jpg';
+import imgEstrutura from './assets/estrutura_commercial.jpg';
+import imgAutomacao from './assets/automacao_processos.jpg';
+import imgConsultoria from './assets/consultorias_treinamentos.jpg';
 
 // Importação das fotos reais da CEO/Fundadora
 import tahyseCorporate from './assets/tahyse_corporate.jpg';
@@ -74,7 +78,6 @@ function App() {
   const heroVisualRef = useRef(null);
 
   const servicesRef = useRef(null);
-  const diferenciaisRef = useRef(null);
   const metodoRef = useRef(null);
   const planosRef = useRef(null);
   const quemSomosRef = useRef(null);
@@ -89,32 +92,32 @@ function App() {
 
   const etapasMetodo = [
     {
-      title: "1. Mapeamento Comercial & Paleta",
-      desc: "Análise profunda do posicionamento atual e definição da identidade visual premium de conversão utilizando a paleta oficial da Somos Buzz.",
+      title: "1. Direcionar",
+      desc: "Análise profunda do posicionamento atual e definição da estratégia de conversão e atração da Somos Buzz.",
       img: parte12
     },
     {
-      title: "2. Desenvolvimento de Atração",
+      title: "2. Atrair",
       desc: "Criação de páginas e anúncios sob medida focados na captação inicial de tráfego ultra-qualificado no Google e Meta Ads.",
       img: parte13
     },
     {
-      title: "3. Nutrição Inteligente de Leads",
+      title: "3. Converter",
       desc: "Implementação de automações de e-mail e mensageria para aquecer os contatos captados antes do contato comercial.",
       img: parte14
     },
     {
-      title: "4. Integração de Processo Comercial",
+      title: "4. Fidelizar",
       desc: "Parametrização completa do CRM com pipelines claros, permitindo o acompanhamento de cada negócio aberto em tempo real.",
       img: parte15
     },
     {
-      title: "5. Otimização com Inteligência Artificial",
+      title: "5. Desenvolver",
       desc: "Otimização de tarefas diárias e rotinas comerciais com inteligência artificial para maximizar a performance comercial.",
       img: parte16
     },
     {
-      title: "6. Colheita de Resultados & Escala",
+      title: "6. Evoluir",
       desc: "Análise analítica de performance comercial, relatórios transparentes de ROI e reinvestimento estratégico para escala contínua.",
       img: parte17
     }
@@ -136,12 +139,12 @@ function App() {
   useEffect(() => {
     // 1. Lenis Smooth Scroll
     const lenis = new Lenis({
-      duration: 1.6, // Scroll inercial mais lento e premium
+      duration: 0.8, // Scroll inercial mais rápido e responsivo
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.05,
+      wheelMultiplier: 1.25,
     });
     window.lenis = lenis;
 
@@ -151,53 +154,59 @@ function App() {
     }
     requestAnimationFrame(raf);
 
+    // Conectar Lenis ao ScrollTrigger do GSAP
     lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
 
-    // 2. TIMELINE HERO (Pin & Scrub)
+    // Interceptar links âncora para compensar o header fixo
+    const handleAnchorClick = (e) => {
+      const link = e.currentTarget;
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#') && href.length > 1) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          lenis.scrollTo(target, { offset: -100, duration: 1.2 });
+        }
+      }
+    };
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(link => link.addEventListener('click', handleAnchorClick));
+
+    // 2. TIMELINE HERO (Transição Suave para a Seção 2)
+    const isMobile = window.innerWidth <= 1024;
     const tlHero = gsap.timeline({
       scrollTrigger: {
         trigger: heroRef.current,
         start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-        pin: true,
+        end: isMobile ? 'bottom 80%' : 'bottom top',
+        scrub: 0.8,
+        pin: !isMobile,
         anticipatePin: 1
       }
     });
-    tlHero.to(heroContentRef.current, { opacity: 1, y: 0, duration: 0.1 }, 0); 
-    tlHero.to(heroContentRef.current, { opacity: 0, y: -60, duration: 1 }, 0.1);
-    tlHero.to(heroVisualRef.current, { opacity: 0, duration: 1 }, 0.1); // Transiciona apenas a opacidade para esmaecer suavemente no scroll
+    tlHero.to(heroContentRef.current, { opacity: 0, y: isMobile ? -30 : -50, duration: 1 }, 0);
+    tlHero.to(heroVisualRef.current, { opacity: 0, scale: isMobile ? 0.95 : 0.9, duration: 1 }, 0);
     window.tlHero = tlHero;
 
-    // 3. TIMELINE SOLUÇÕES (Services)
+    // 3. TIMELINE SOLUÇÕES (Services - Entrada Elegante)
     const tlServices = gsap.timeline({
       scrollTrigger: {
         trigger: servicesRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-        pin: true,
+        start: isMobile ? 'top 85%' : 'top 75%',
+        end: isMobile ? 'top 40%' : 'top 20%',
+        scrub: 0.8,
+        pin: !isMobile,
         anticipatePin: 1
       }
     });
-    tlServices.fromTo(".services .section-header", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5 });
-    tlServices.fromTo(".services .hexagon-card", { opacity: 0, y: 80, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, stagger: 0.2, duration: 1 });
+    tlServices.fromTo(".services .section-header", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6 });
+    tlServices.fromTo(".services .hexagon-card", { opacity: 0, y: 60, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, stagger: 0.15, duration: 1 });
 
-    // 4. TIMELINE DIFERENCIAIS
-    const tlDiferenciais = gsap.timeline({
-      scrollTrigger: {
-        trigger: diferenciaisRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1
-      }
-    });
-    tlDiferenciais.fromTo(".diferenciais .reveal", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 1 }, 0);
-    tlDiferenciais.fromTo(".diferencial-img-wrapper", { opacity: 0, scale: 0.8, rotate: -3 }, { opacity: 1, scale: 1, rotate: 0, duration: 1 }, 0);
-
-    // 5. TIMELINE MÉTODO COLMEIA EM ZIGUE-ZAGUE (REVEAL 3D CINEMATOGRÁFICO DE MONTAGEM)
+    // 4. TIMELINE MÉTODO COLMEIA EM ZIGUE-ZAGUE
     gsap.utils.toArray(".metodo-step-row").forEach((row, index) => {
       const visualContainer = row.querySelector(".metodo-step-visual-container");
       const textContainer = row.querySelector(".metodo-step-text");
@@ -206,24 +215,23 @@ function App() {
       gsap.fromTo(visualContainer, 
         { 
           opacity: 0, 
-          x: direction * 150, 
-          rotate: direction * 25, 
-          scale: 0.7,
-          transformPerspective: 1000,
-          rotateY: direction * 45
+          x: isMobile ? 0 : direction * 150, 
+          y: isMobile ? 40 : 0,
+          rotate: isMobile ? 0 : direction * 25, 
+          scale: 0.85
         },
         { 
           opacity: 1, 
           x: 0, 
+          y: 0,
           rotate: 0, 
           scale: 1, 
-          rotateY: 0,
-          duration: 1,
+          duration: 0.8,
           scrollTrigger: {
             trigger: row,
-            start: "top 88%",
-            end: "top 45%",
-            scrub: 1
+            start: isMobile ? "top 90%" : "top 95%",
+            end: "top 70%",
+            scrub: 0.5
           }
         }
       );
@@ -231,38 +239,38 @@ function App() {
       gsap.fromTo(textContainer,
         {
           opacity: 0,
-          x: -direction * 100,
-          filter: "blur(5px)"
+          y: 30,
+          filter: "blur(4px)"
         },
         {
           opacity: 1,
-          x: 0,
+          y: 0,
           filter: "blur(0px)",
-          duration: 1,
+          duration: 0.8,
           scrollTrigger: {
             trigger: row,
-            start: "top 85%",
-            end: "top 50%",
-            scrub: 1
+            start: isMobile ? "top 88%" : "top 90%",
+            end: "top 70%",
+            scrub: 0.5
           }
         }
       );
     });
 
-    // 6. TIMELINE PLANOS EM ZIGUE-ZAGUE (REVEAL GRADATIVO POR SCROLL)
+    // 6. TIMELINE PLANOS EM ZIGUE-ZAGUE
     gsap.utils.toArray(".plano-step-row").forEach((row) => {
       gsap.fromTo(row, 
-        { opacity: 0, y: 80, scale: 0.95 },
+        { opacity: 0, y: 50, scale: 0.95 },
         { 
           opacity: 1, 
           y: 0, 
           scale: 1, 
-          duration: 1,
+          duration: 0.8,
           scrollTrigger: {
             trigger: row,
-            start: "top 85%",
-            end: "top 50%",
-            scrub: 1
+            start: isMobile ? "top 92%" : "top 90%",
+            end: "top 75%",
+            scrub: 0.5
           }
         }
       );
@@ -271,17 +279,17 @@ function App() {
     // Animação da Seção do Blog
     gsap.utils.toArray(".blog-card").forEach((card) => {
       gsap.fromTo(card,
-        { opacity: 0, y: 50, scale: 0.9 },
+        { opacity: 0, y: 40, scale: 0.95 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 1,
+          duration: 0.8,
           scrollTrigger: {
             trigger: card,
-            start: "top 90%",
-            end: "top 60%",
-            scrub: 1
+            start: isMobile ? "top 92%" : "top 95%",
+            end: "top 75%",
+            scrub: 0.5
           }
         }
       );
@@ -294,12 +302,12 @@ function App() {
         start: 'top top',
         end: 'bottom top',
         scrub: 1,
-        pin: true,
+        pin: !isMobile,
         anticipatePin: 1
       }
     });
-    tlQuemSomos.fromTo(".gallery-showcase", { opacity: 0, scale: 0.85, x: -50 }, { opacity: 1, scale: 1, x: 0, duration: 1 }, 0);
-    tlQuemSomos.fromTo(".quem-somos .dna-content", { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration: 1 }, 0);
+    tlQuemSomos.fromTo(".gallery-showcase", { opacity: 0, scale: 0.85, x: isMobile ? 0 : -50 }, { opacity: 1, scale: 1, x: 0, duration: 1 }, 0);
+    tlQuemSomos.fromTo(".quem-somos .dna-content", { opacity: 0, x: isMobile ? 0 : 50 }, { opacity: 1, x: 0, duration: 1 }, 0);
 
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -406,30 +414,37 @@ function App() {
           <div className="hero-grid">
             <div className="hero-content" ref={heroContentRef}>
               <div className="hero-badge">
-                <Sparkles size={14} /> Polinização Digital & Escala Comercial Ativa
+                <Sparkles size={14} /> Marketing e Vendas Trabalhando Juntos
               </div>
               <h1 className="hero-title">
-                Polinizamos marcas para colher <span className="text-gradient-buzz">resultados exponenciais</span>
+                Sua empresa cresce quando Marketing e Vendas <span className="text-gradient-buzz">trabalham juntos.</span>
               </h1>
               <p className="hero-desc">
-                Muito além de tráfego pago. Estruturamos a colmeia comercial do seu negócio com processos sólidos, automações inteligentes de IA e design premium projetado em favos de alta fidelidade para maximizar sua colheita.
+                A Buzz estrutura Marketing, Vendas, CRM e Inteligência Artificial para empresas que querem crescer com organização, previsibilidade e resultados consistentes.
               </p>
               <div className="hero-btns">
-                <a href="#contato" className="btn btn-primary">Fale Conosco <Rocket size={16} /></a>
-                <a href="#servicos" className="btn btn-secondary">Explorar Soluções</a>
+                <a href="#contato" className="btn btn-primary">Agendar Diagnóstico <Rocket size={16} /></a>
+                <a href="#servicos" className="btn btn-secondary">Conhecer Soluções</a>
               </div>
             </div>
 
-            <div className="hero-visual" ref={heroVisualRef} style={{ alignSelf: 'end', display: 'flex', alignItems: 'end', height: '100%', justifyContent: 'center', position: 'relative', zIndex: 10 }}>
+            <div className="hero-visual" ref={heroVisualRef}>
               <div className="hero-glow-blob" style={{ bottom: '0' }}></div>
-              <img 
-                src={fotosCEO[currentPhotoIndex]} 
-                alt="CEO Tahyse Somos Buzz" 
-                style={{ width: '100%', maxHeight: '780px', objectFit: 'contain', display: 'block', margin: '0', position: 'absolute', bottom: 0 }}
-                key={currentPhotoIndex}
-              />
+              {fotosCEO.map((foto, index) => (
+                <img 
+                  key={index}
+                  src={foto} 
+                  alt={`CEO Tahyse Somos Buzz ${index + 1}`} 
+                  className={`hero-ceo-img ${index === currentPhotoIndex ? 'active' : ''}`}
+                />
+              ))}
             </div>
           </div>
+        </div>
+        <div className="section-nav">
+          <a href="#servicos" className="scroll-down-btn" aria-label="Ir para Soluções">
+            <ChevronDown size={24} />
+          </a>
         </div>
       </section>
 
@@ -437,57 +452,55 @@ function App() {
       <section className="services" id="servicos" ref={servicesRef} style={{ height: 'auto', minHeight: 'auto', padding: '8rem 0' }}>
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Soluções Premium</span>
-            <h2 className="section-title">Aceleradores de Escala Comercial</h2>
-            <p className="section-desc">Criamos engrenagens digitais focadas em estruturação comercial e marketing estratégico.</p>
+            <span className="section-tag">Nossos Serviços</span>
+            <h2 className="section-title" style={{ fontSize: '2rem', maxWidth: '800px', margin: '0 auto' }}>Estratégias que conectam Marketing, Vendas, CRM e Inteligência Artificial para transformar processos em resultados.</h2>
           </div>
 
-          <div className="services-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '2.5rem', marginTop: '4rem' }}>
-            <div className="hexagon-card service-card">
+          <div className="services-grid" style={{ marginTop: '4rem' }}>
+            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgMarketing})` }}>
               <Megaphone size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
               <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Marketing Estratégico</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', lineHeight: '1.5' }}>Planejamento multicanal baseado em dados e posicionamento premium para destacar sua marca no mercado.</p>
+              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Planejamos ações que fortalecem sua marca, atraem o público certo e criam oportunidades reais de negócio. Cada estratégia é desenvolvida de acordo com os objetivos da empresa e alinhada ao processo comercial.</p>
             </div>
 
-            <div className="hexagon-card service-card">
+            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgEstrutura})` }}>
+              <TrendingUp size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
+              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Estrutura Comercial</h3>
+              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Organizamos o processo de vendas para que sua equipe tenha mais eficiência, previsibilidade e controle sobre cada oportunidade. Definimos fluxos, acompanhamentos e indicadores que ajudam a aumentar a conversão.</p>
+            </div>
+
+            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgCrm})` }}>
+              <Users size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
+              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>CRM</h3>
+              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Implementamos e configuramos o CRM para centralizar informações, organizar atendimentos, automatizar tarefas e acompanhar toda a jornada do cliente, tornando o processo comercial mais produtivo.</p>
+            </div>
+
+            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgIA})` }}>
               <Zap size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
               <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Inteligência Artificial</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', lineHeight: '1.5' }}>Otimização de rotinas e processos com IA, criando fluxos ágeis que maximizam a performance comercial.</p>
+              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Aplicamos soluções de Inteligência Artificial para automatizar processos, otimizar atendimentos, gerar produtividade e apoiar a tomada de decisões com mais agilidade e inteligência.</p>
             </div>
 
-            <div className="hexagon-card service-card">
-              <Users size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>CRM & Comercial</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', lineHeight: '1.5' }}>Integração de ferramentas de gestão de leads (CRMs) com pipelines claros para sua equipe focar em fechamentos.</p>
+            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgAutomacao})` }}>
+              <Code size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
+              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Automação de Processos</h3>
+              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Reduzimos tarefas manuais por meio de integrações e automações que conectam sistemas, equipes e informações, permitindo que sua empresa trabalhe de forma mais eficiente.</p>
+            </div>
+
+            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgConsultoria})` }}>
+              <Share2 size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
+              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Consultorias e Treinamentos</h3>
+              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Capacitamos equipes e acompanhamos a implementação de estratégias para que Marketing e Vendas atuem de forma integrada, utilizando processos, ferramentas e tecnologia como aliados do crescimento.</p>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* SEÇÃO NOSSO DIFERENCIAL & PALETA DE CORES */}
-      <section className="diferenciais" id="diferenciais" ref={diferenciaisRef} style={{ background: 'var(--bg-secondary)' }}>
-        <div className="honeycomb-pattern" style={{ opacity: 0.02 }}></div>
-        <div className="container">
-          <div className="diferencial-card-grid">
-            <div className="reveal">
-              <span className="section-tag">Diferencial & Identidade</span>
-              <h2 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '2.8rem', lineHeight: 1.2, marginBottom: '2rem' }}>
-                Design de Alta Conversão & Cores Oficiais
-              </h2>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', fontSize: '1.05rem' }}>
-                Não criamos apenas sites. Desenvolvemos ecossistemas visuais baseados na psicologia das cores oficiais da **Somos Buzz**, desenhadas para transmitir autoridade, inovação e gerar confiança instantânea nos visitantes do seu negócio.
-              </p>
-              <div className="dna-features">
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Amarelo Ouro: Conversão e Energia</div>
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Laranja Buzz: Ação e Tecnologia</div>
-                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Estrutura Hexagonal Fluida</div>
-              </div>
-            </div>
-
-            <div className="diferencial-img-wrapper">
-              <img src={paletaBuzz} alt="Paleta de Cores Somos Buzz" style={{ padding: '2rem', objectFit: 'contain' }} />
-            </div>
-          </div>
+        <div className="section-nav">
+          <a href="#home" className="scroll-up-btn" aria-label="Voltar para Home">
+            <ChevronUp size={24} />
+          </a>
+          <a href="#metodo" className="scroll-down-btn" aria-label="Ir para Método Colmeia">
+            <ChevronDown size={24} />
+          </a>
         </div>
       </section>
 
@@ -495,9 +508,9 @@ function App() {
       <section className="metodo" id="metodo" ref={metodoRef}>
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Metodologia Exclusiva</span>
+            <span className="section-tag">Por que o Método Colmeia?</span>
             <h2 className="section-title">O Método Colmeia</h2>
-            <p className="section-desc">Nosso processo refinado de escala comercial estruturado em favos que se conectam em zigue-zague.</p>
+            <p className="section-desc">Grandes resultados não acontecem por acaso. Eles são construídos por meio de estratégia, organização e execução consistente. O Método Colmeia é a metodologia exclusiva da Buzz para integrar Marketing, Vendas, CRM e Inteligência Artificial em um único processo.</p>
           </div>
 
           <div className="metodo-timeline">
@@ -528,15 +541,23 @@ function App() {
             ))}
           </div>
         </div>
+        <div className="section-nav">
+          <a href="#servicos" className="scroll-up-btn" aria-label="Voltar para Soluções">
+            <ChevronUp size={24} />
+          </a>
+          <a href="#planos" className="scroll-down-btn" aria-label="Ir para Planos">
+            <ChevronDown size={24} />
+          </a>
+        </div>
       </section>
 
       {/* SEÇÃO PLANOS DE CRESCIMENTO (ZIGUE-ZAGUE TIMELINE) */}
       <section className="portfolio" id="planos" ref={planosRef}>
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Modelos de Escala</span>
-            <h2 className="section-title">Estratégias de Crescimento</h2>
-            <p className="section-desc">Estruturas desenhadas para cada fase do seu negócio atingir a máxima colheita de resultados.</p>
+            <span className="section-tag">Soluções</span>
+            <h2 className="section-title">Soluções Estruturadas</h2>
+            <p className="section-desc">Cada empresa está em um momento diferente de crescimento. Por isso, desenvolvemos soluções estruturadas que combinam estratégia, execução e acompanhamento para transformar desafios em resultados concretos.</p>
           </div>
 
           <div className="metodo-timeline">
@@ -548,16 +569,33 @@ function App() {
                 </div>
               </div>
               <div className="plano-step-text">
-                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Fase Inicial</span>
+                <span className="section-tag" style={{ fontSize: '0.75rem' }}>O primeiro passo</span>
                 <h3>Plano Semente</h3>
-                <p>Ideal para estruturação e primeiros passos consistentes em tráfego de alta conversão.</p>
+                <p>Ideal para negócios que precisam estruturar Marketing e Vendas antes de acelerar o crescimento. Em 30 dias, realizamos um diagnóstico completo, definimos objetivos, construímos um plano de ação e entregamos uma estratégia personalizada.</p>
                 <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Configuração profissional de contas no Google Ads e Meta Ads.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Desenvolvimento de 1 Landing Page ultra-veloz de alta conversão.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Relatório analítico básico de captação mensal de leads.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Suporte dedicado via WhatsApp em horário comercial.</li>
+                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Indicado para iniciar o crescimento com organização.</li>
+                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Base sólida para o desenvolvimento da empresa.</li>
                 </ul>
-                <a href="#contato" className="btn btn-primary" style={{ width: 'fit-content' }}>Contratar Plano Semente <ArrowRight size={16} /></a>
+                <a href="#contato" className="btn btn-primary" style={{ width: 'fit-content' }}>Agendar Diagnóstico <ArrowRight size={16} /></a>
+              </div>
+            </div>
+
+            {/* Projeto Colheita */}
+            <div className="plano-step-row reveal">
+              <div className="plano-step-visual">
+                <div className="plano-step-visual-container">
+                  <img src={planoColheita} alt="Projeto Colheita" />
+                </div>
+              </div>
+              <div className="plano-step-text">
+                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Planejamento e Execução</span>
+                <h3>Projeto Colheita</h3>
+                <p>Durante 06 meses, trabalhamos lado a lado com sua empresa para transformar o planejamento em resultados. Integramos Marketing, Comercial, CRM, IA e acompanhamento contínuo para construir processos eficientes e gerar crescimento consistente.</p>
+                <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
+                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Parceria estratégica focada em evolução.</li>
+                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Atuação completa para acelerar resultados.</li>
+                </ul>
+                <a href="#contato" className="btn btn-primary" style={{ width: 'fit-content' }}>Agendar Diagnóstico <ArrowRight size={16} /></a>
               </div>
             </div>
 
@@ -569,41 +607,25 @@ function App() {
                 </div>
               </div>
               <div className="plano-step-text">
-                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Fase de Aceleração</span>
+                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Evolução Contínua</span>
                 <h3>Plano Safra</h3>
-                <p>Estratégia completa de CRM, marketing de atração, automações e tráfego multicanal.</p>
+                <p>Planejamento para empresas que querem crescer com previsibilidade. Com acompanhamento de 12 meses, esta solução é voltada para empresas que buscam evolução contínua, organização dos processos e crescimento sustentável.</p>
                 <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Campanhas de Tráfego Pago avançado em Google, Meta, TikTok e YouTube.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Criação de até 3 Landing Pages personalizadas ou Funil Completo.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Integração e parametrização completa de CRM para seu comercial.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Fluxos de automação de e-mails para aquecimento de leads.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Relatório analítico quinzenal de ROI e Custo de Aquisição (CAC).</li>
+                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Estratégias alinhadas aos objetivos da empresa.</li>
+                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Acompanhamento de indicadores e ajustes.</li>
                 </ul>
-                <a href="#contato" className="btn btn-primary" style={{ width: 'fit-content' }}>Contratar Plano Safra <ArrowRight size={16} /></a>
-              </div>
-            </div>
-
-            {/* Plano Colheita */}
-            <div className="plano-step-row reveal">
-              <div className="plano-step-visual">
-                <div className="plano-step-visual-container">
-                  <img src={planoColheita} alt="Plano Colheita" />
-                </div>
-              </div>
-              <div className="plano-step-text">
-                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Escala Máxima</span>
-                <h3>Plano Colheita</h3>
-                <p>Integração total de IA comercial ativa, tráfego com investimento agressivo e equipe dedicada.</p>
-                <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Otimização diária de campanhas de alta escala com especialista sênior.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Landing Pages, sites e ecossistemas de conversão ilimitados de acordo com demanda.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Implementação de IA para qualificação e ativação de leads automática.</li>
-                  <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Treinamento comercial personalizado para o seu time de vendas.</li>
-                </ul>
-                <a href="#contato" className="btn btn-primary" style={{ width: 'fit-content' }}>Contratar Plano Colheita <ArrowRight size={16} /></a>
+                <a href="#contato" className="btn btn-primary" style={{ width: 'fit-content' }}>Agendar Diagnóstico <ArrowRight size={16} /></a>
               </div>
             </div>
           </div>
+        </div>
+        <div className="section-nav">
+          <a href="#metodo" className="scroll-up-btn" aria-label="Voltar para Método Colmeia">
+            <ChevronUp size={24} />
+          </a>
+          <a href="#blog" className="scroll-down-btn" aria-label="Ir para Blog">
+            <ChevronDown size={24} />
+          </a>
         </div>
       </section>
 
@@ -636,6 +658,14 @@ function App() {
             </div>
           </div>
         </div>
+        <div className="section-nav">
+          <a href="#planos" className="scroll-up-btn" aria-label="Voltar para Planos">
+            <ChevronUp size={24} />
+          </a>
+          <a href="#quem-somos" className="scroll-down-btn" aria-label="Ir para Quem Somos">
+            <ChevronDown size={24} />
+          </a>
+        </div>
       </section>
 
       {/* SEÇÃO QUEM SOMOS (MASCOTE EM FAVO HEXAGONAL) */}
@@ -648,21 +678,32 @@ function App() {
             </div>
 
             <div className="dna-content">
-              <span className="section-tag">Nossa Liderança</span>
+              <span className="section-tag">Sobre a Buzz</span>
               <h2 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '2.5rem', lineHeight: 1.2, marginBottom: '2rem' }}>
-                Muito mais que tráfego. Somos inteligência em vendas.
+                Mais do que uma empresa de Marketing. Somos parceiros estratégicos para o crescimento do seu negócio.
               </h2>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
-                A <strong>Somos Buzz</strong> é liderada por especialistas focados em performance comercial. Entendemos que tráfego sem um processo de vendas bem estruturado é desperdício. Por isso, criamos ecossistemas completos para transformar leads em vendas todos os dias.
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                A Buzz nasceu da percepção de um problema comum em muitas empresas: investir em marketing sem ter um processo comercial estruturado para transformar oportunidades em vendas. Por isso, unimos Marketing Estratégico, Vendas, CRM e Inteligência Artificial para criar soluções que organizam processos, fortalecem equipes e geram crescimento com previsibilidade.
               </p>
-              <div className="dna-features">
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Foco Total em ROI</div>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Tecnologia e Inovação em IA</div>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Relatórios 100% Transparentes</div>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Parceria Estratégica Ponta a Ponta</div>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                Acreditamos que vender mais não depende apenas de atrair clientes. Depende de estratégia, organização e acompanhamento. Nosso papel é construir esse caminho ao lado de cada empresa, desenvolvendo soluções personalizadas. Porque o crescimento sustentável acontece quando Marketing e Vendas trabalham juntos.
+              </p>
+              <div className="dna-features" style={{ marginTop: '2rem' }}>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Estratégia antes da execução</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Relacionamentos construídos com confiança</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Inovação aplicada à realidade do negócio</div>
+                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Compromisso com resultados e evolução contínua</div>
               </div>
             </div>
           </div>
+        </div>
+        <div className="section-nav">
+          <a href="#blog" className="scroll-up-btn" aria-label="Voltar para Blog">
+            <ChevronUp size={24} />
+          </a>
+          <a href="#contato" className="scroll-down-btn" aria-label="Ir para Contato">
+            <ChevronDown size={24} />
+          </a>
         </div>
       </section>
 
@@ -671,13 +712,13 @@ function App() {
         <div className="container">
           <div className="contact-grid">
             <div className="contact-info">
-              <span className="section-tag">Fale Conosco</span>
-              <h2 className="contact-title">Pronto para iniciar sua colheita?</h2>
+              <span className="section-tag">Qual solução é a ideal?</span>
+              <h2 className="contact-title">Vamos construir o próximo passo do seu negócio?</h2>
               <p className="contact-desc">
-                Conte-nos sobre o seu modelo de negócio e veja como podemos implementar o Método Colmeia para gerar escala sustentável.
+                Transforme Marketing, Vendas, CRM e Inteligência Artificial em uma estratégia integrada para crescer com mais organização, previsibilidade e resultados.
               </p>
 
-              <div className="contact-channels">
+              <div className="contact-channels" style={{ marginBottom: '2rem' }}>
                 <div className="channel-item">
                   <div className="channel-icon">
                     <Mail size={20} />
@@ -697,6 +738,12 @@ function App() {
                     <p>+55 (34) 9928-3020</p>
                   </div>
                 </div>
+              </div>
+
+              <div className="dna-features" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+                <div className="dna-feature-item" style={{ fontSize: '0.9rem' }}><CheckCircle size={16} className="text-gradient-buzz" /> Parceiro Oficial Kommo CRM</div>
+                <div className="dna-feature-item" style={{ fontSize: '0.9rem' }}><CheckCircle size={16} className="text-gradient-buzz" /> Projetos Sob Medida</div>
+                <div className="dna-feature-item" style={{ fontSize: '0.9rem' }}><CheckCircle size={16} className="text-gradient-buzz" /> Sem Soluções Milagrosas</div>
               </div>
             </div>
 
@@ -835,6 +882,11 @@ function App() {
               </form>
             </div>
           </div>
+        </div>
+        <div className="section-nav" style={{ bottom: '-1rem' }}>
+          <a href="#quem-somos" className="scroll-up-btn" aria-label="Voltar para Quem Somos">
+            <ChevronUp size={24} />
+          </a>
         </div>
       </section>
 
