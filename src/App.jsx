@@ -17,7 +17,6 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   Zap,
   Users,
   ArrowUp
@@ -32,7 +31,7 @@ import Lenis from 'lenis';
 gsap.registerPlugin(ScrollTrigger);
 
 // Importação dos logos oficiais e assets
-import logoBuzzMkt from './assets/icone_buzz.png';
+import logoBuzzMkt from './assets/logo_buzz_horizontal.png';
 import mascoteBuzz from './assets/mascote_buzz.png';
 
 // Importação das partes do Método Colmeia (Fatias do Drive)
@@ -56,20 +55,13 @@ import imgEstrutura from './assets/estrutura_commercial.jpg';
 import imgAutomacao from './assets/automacao_processos.jpg';
 import imgConsultoria from './assets/consultorias_treinamentos.jpg';
 
-// Importação das fotos reais da CEO/Fundadora
-import tahyseCorporate from './assets/tahyse_corporate.jpg';
-import tahyseStudio from './assets/tahyse_studio.jpg';
+// Importação da foto real da CEO/Fundadora
 import tahyse1 from './assets/tahyse_1.png';
-import tahyse2 from './assets/tahyse_2.png';
-import tahyse3 from './assets/tahyse_3.png';
-import tahyse4 from './assets/tahyse_4.png';
-import tahyse5 from './assets/tahyse_5.png';
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeEtapa, setActiveEtapa] = useState(0);
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   // Referências para animações
@@ -82,13 +74,7 @@ function App() {
   const planosRef = useRef(null);
   const quemSomosRef = useRef(null);
 
-  const fotosCEO = [
-    tahyse1,
-    tahyse2,
-    tahyse3,
-    tahyse4,
-    tahyse5
-  ];
+
 
   const etapasMetodo = [
     {
@@ -127,13 +113,7 @@ function App() {
   const [formStatus, setFormStatus] = useState('idle');
   const [formStep, setFormStep] = useState(1);
 
-  // Carrossel Automático de Fotos da CEO (Tahyse) - Mudança automática a cada 3.5 segundos
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentPhotoIndex((prev) => (prev + 1) % fotosCEO.length);
-    }, 3500);
-    return () => clearInterval(timer);
-  }, []);
+
 
   // GSAP & Lenis Smooth Scroll Setup
   useEffect(() => {
@@ -169,42 +149,56 @@ function App() {
         e.preventDefault();
         const target = document.querySelector(href);
         if (target) {
-          lenis.scrollTo(target, { offset: -100, duration: 1.2 });
+          lenis.scrollTo(target, { offset: -70, duration: 1.0 });
         }
       }
     };
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
     anchorLinks.forEach(link => link.addEventListener('click', handleAnchorClick));
 
-    // 2. TIMELINE HERO (Transição Suave para a Seção 2)
+    // 2. TIMELINE HERO (Transição Suave para a Seção 2 sem travar tela)
     const isMobile = window.innerWidth <= 1024;
     const tlHero = gsap.timeline({
       scrollTrigger: {
         trigger: heroRef.current,
         start: 'top top',
-        end: isMobile ? 'bottom 80%' : 'bottom top',
-        scrub: 0.8,
-        pin: !isMobile,
-        anticipatePin: 1
+        end: 'bottom 20%',
+        scrub: 0.5
       }
     });
-    tlHero.to(heroContentRef.current, { opacity: 0, y: isMobile ? -30 : -50, duration: 1 }, 0);
-    tlHero.to(heroVisualRef.current, { opacity: 0, scale: isMobile ? 0.95 : 0.9, duration: 1 }, 0);
+    tlHero.to(heroContentRef.current, { opacity: 0.2, y: isMobile ? -20 : -40, duration: 1 }, 0);
+    tlHero.to(heroVisualRef.current, { opacity: 0.2, scale: isMobile ? 0.98 : 0.95, duration: 1 }, 0);
     window.tlHero = tlHero;
 
-    // 3. TIMELINE SOLUÇÕES (Services - Entrada Elegante)
-    const tlServices = gsap.timeline({
-      scrollTrigger: {
-        trigger: servicesRef.current,
-        start: isMobile ? 'top 85%' : 'top 75%',
-        end: isMobile ? 'top 40%' : 'top 20%',
-        scrub: 0.8,
-        pin: !isMobile,
-        anticipatePin: 1
+    // 3. ENTRADA DE SERVIÇOS (Revelação fluida ao rolar)
+    gsap.fromTo(".services .section-header", 
+      { opacity: 0, y: 35 }, 
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: servicesRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
       }
-    });
-    tlServices.fromTo(".services .section-header", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6 });
-    tlServices.fromTo(".services .hexagon-card", { opacity: 0, y: 60, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, stagger: 0.15, duration: 1 });
+    );
+    gsap.fromTo(".services .hexagon-card", 
+      { opacity: 0, y: 50, scale: 0.94 }, 
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        stagger: 0.1, 
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: ".services .services-grid",
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
 
     // 4. TIMELINE MÉTODO COLMEIA EM ZIGUE-ZAGUE
     gsap.utils.toArray(".metodo-step-row").forEach((row, index) => {
@@ -295,19 +289,34 @@ function App() {
       );
     });
 
-    // 7. TIMELINE QUEM SOMOS (CEO Showcase / Mascote)
-    const tlQuemSomos = gsap.timeline({
-      scrollTrigger: {
-        trigger: quemSomosRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-        pin: !isMobile,
-        anticipatePin: 1
+    // 7. TIMELINE QUEM SOMOS (Revelação fluida)
+    gsap.fromTo(".gallery-showcase", 
+      { opacity: 0, scale: 0.9, x: isMobile ? 0 : -40 }, 
+      { 
+        opacity: 1, 
+        scale: 1, 
+        x: 0, 
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: quemSomosRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
       }
-    });
-    tlQuemSomos.fromTo(".gallery-showcase", { opacity: 0, scale: 0.85, x: isMobile ? 0 : -50 }, { opacity: 1, scale: 1, x: 0, duration: 1 }, 0);
-    tlQuemSomos.fromTo(".quem-somos .dna-content", { opacity: 0, x: isMobile ? 0 : 50 }, { opacity: 1, x: 0, duration: 1 }, 0);
+    );
+    gsap.fromTo(".quem-somos .dna-content", 
+      { opacity: 0, x: isMobile ? 0 : 40 }, 
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: quemSomosRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
 
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -357,13 +366,7 @@ function App() {
     }, 1500);
   };
 
-  const nextCEOPhoto = () => {
-    setCurrentPhotoIndex((prev) => (prev + 1) % fotosCEO.length);
-  };
 
-  const prevCEOPhoto = () => {
-    setCurrentPhotoIndex((prev) => (prev - 1 + fotosCEO.length) % fotosCEO.length);
-  };
 
   return (
     <>
@@ -413,11 +416,8 @@ function App() {
         <div className="container">
           <div className="hero-grid">
             <div className="hero-content" ref={heroContentRef}>
-              <div className="hero-badge">
-                <Sparkles size={14} /> Marketing e Vendas Trabalhando Juntos
-              </div>
               <h1 className="hero-title">
-                Sua empresa cresce quando Marketing e Vendas <span className="text-gradient-buzz">trabalham juntos.</span>
+                Sua empresa cresce quando Marketing e Vendas <span className="text-gradient-buzz">trabalham juntos</span>
               </h1>
               <p className="hero-desc">
                 A Buzz estrutura Marketing, Vendas, CRM e Inteligência Artificial para empresas que querem crescer com organização, previsibilidade e resultados consistentes.
@@ -430,14 +430,11 @@ function App() {
 
             <div className="hero-visual" ref={heroVisualRef}>
               <div className="hero-glow-blob" style={{ bottom: '0' }}></div>
-              {fotosCEO.map((foto, index) => (
-                <img 
-                  key={index}
-                  src={foto} 
-                  alt={`CEO Tahyse Somos Buzz ${index + 1}`} 
-                  className={`hero-ceo-img ${index === currentPhotoIndex ? 'active' : ''}`}
-                />
-              ))}
+              <img 
+                src={tahyse1} 
+                alt="CEO Tahyse Somos Buzz" 
+                className="hero-ceo-img"
+              />
             </div>
           </div>
         </div>
@@ -449,7 +446,7 @@ function App() {
       </section>
 
       {/* SEÇÃO SOLUÇÕES PREMIUM (CARDS HEXAGONAIS) */}
-      <section className="services" id="servicos" ref={servicesRef} style={{ height: 'auto', minHeight: 'auto', padding: '8rem 0' }}>
+      <section className="services" id="servicos" ref={servicesRef}>
         <div className="container">
           <div className="section-header">
             <span className="section-tag">Nossos Serviços</span>
