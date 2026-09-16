@@ -63,6 +63,7 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeEtapa, setActiveEtapa] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
 
   // Referências para animações
   const heroRef = useRef(null);
@@ -74,7 +75,50 @@ function App() {
   const planosRef = useRef(null);
   const quemSomosRef = useRef(null);
 
-
+  const servicosData = [
+    {
+      id: 'marketing',
+      icon: Megaphone,
+      title: 'Marketing Estratégico',
+      desc: 'Planejamos ações que fortalecem sua marca, atraem o público certo e criam oportunidades reais de negócio. Cada estratégia é desenvolvida de acordo com os objetivos da empresa e alinhada ao processo comercial.',
+      img: imgMarketing
+    },
+    {
+      id: 'estrutura',
+      icon: TrendingUp,
+      title: 'Estrutura Comercial',
+      desc: 'Organizamos o processo de vendas para que sua equipe tenha mais eficiência, previsibilidade e controle sobre cada oportunidade. Definimos fluxos, acompanhamentos e indicadores que ajudam a aumentar a conversão.',
+      img: imgEstrutura
+    },
+    {
+      id: 'crm',
+      icon: Users,
+      title: 'CRM',
+      desc: 'Implementamos e configuramos o CRM para centralizar informações, organizar atendimentos, automatizar tarefas e acompanhar toda a jornada do cliente, tornando o processo comercial mais produtivo.',
+      img: imgCrm
+    },
+    {
+      id: 'ia',
+      icon: Zap,
+      title: 'Inteligência Artificial',
+      desc: 'Aplicamos soluções de Inteligência Artificial para automatizar processos, otimizar atendimentos, gerar produtividade e apoiar a tomada de decisões com mais agilidade e inteligência.',
+      img: imgIA
+    },
+    {
+      id: 'automacao',
+      icon: Code,
+      title: 'Automação de Processos',
+      desc: 'Reduzimos tarefas manuais por meio de integrações e automações que conectam sistemas, equipes e informações, permitindo que sua empresa trabalhe de forma mais eficiente.',
+      img: imgAutomacao
+    },
+    {
+      id: 'consultoria',
+      icon: Share2,
+      title: 'Consultorias e Treinamentos',
+      desc: 'Capacitamos equipes e acompanhamos a implementação de estratégias para que Marketing e Vendas atuem de forma integrada, utilizando processos, ferramentas e tecnologia como aliados do crescimento.',
+      img: imgConsultoria
+    }
+  ];
 
   const etapasMetodo = [
     {
@@ -389,7 +433,7 @@ function App() {
           
           <ul className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`} id="nav-menu">
             <li><a href="#home" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</a></li>
-            <li><a href="#servicos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Soluções</a></li>
+            <li><a href="#servicos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Serviços</a></li>
             <li><a href="#metodo" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Método Colmeia</a></li>
             <li><a href="#planos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Planos</a></li>
             <li><a href="#blog" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Blog</a></li>
@@ -424,7 +468,7 @@ function App() {
               </p>
               <div className="hero-btns">
                 <a href="#contato" className="btn btn-primary">Agendar Diagnóstico <Rocket size={16} /></a>
-                <a href="#servicos" className="btn btn-secondary">Conhecer Soluções</a>
+                <a href="#servicos" className="btn btn-secondary">Conhecer Serviços</a>
               </div>
             </div>
 
@@ -439,7 +483,7 @@ function App() {
           </div>
         </div>
         <div className="section-nav">
-          <a href="#servicos" className="scroll-down-btn" aria-label="Ir para Soluções">
+          <a href="#servicos" className="scroll-down-btn" aria-label="Ir para Serviços">
             <ChevronDown size={24} />
           </a>
         </div>
@@ -449,46 +493,41 @@ function App() {
       <section className="services" id="servicos" ref={servicesRef}>
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Nossos Serviços</span>
-            <h2 className="section-title" style={{ fontSize: '2rem', maxWidth: '800px', margin: '0 auto' }}>Estratégias que conectam Marketing, Vendas, CRM e Inteligência Artificial para transformar processos em resultados.</h2>
+            <span className="section-tag" style={{ color: '#ffffff' }}>Nossos Serviços</span>
+            <h2 className="section-title text-gradient-buzz" style={{ fontSize: '2rem', maxWidth: '800px', margin: '0 auto' }}>
+              Estratégias que conectam Marketing, Vendas, CRM e Inteligência Artificial para transformar processos em resultados
+            </h2>
           </div>
 
           <div className="services-grid" style={{ marginTop: '4rem' }}>
-            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgMarketing})` }}>
-              <Megaphone size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Marketing Estratégico</h3>
-              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Planejamos ações que fortalecem sua marca, atraem o público certo e criam oportunidades reais de negócio. Cada estratégia é desenvolvida de acordo com os objetivos da empresa e alinhada ao processo comercial.</p>
-            </div>
-
-            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgEstrutura})` }}>
-              <TrendingUp size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Estrutura Comercial</h3>
-              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Organizamos o processo de vendas para que sua equipe tenha mais eficiência, previsibilidade e controle sobre cada oportunidade. Definimos fluxos, acompanhamentos e indicadores que ajudam a aumentar a conversão.</p>
-            </div>
-
-            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgCrm})` }}>
-              <Users size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>CRM</h3>
-              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Implementamos e configuramos o CRM para centralizar informações, organizar atendimentos, automatizar tarefas e acompanhar toda a jornada do cliente, tornando o processo comercial mais produtivo.</p>
-            </div>
-
-            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgIA})` }}>
-              <Zap size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Inteligência Artificial</h3>
-              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Aplicamos soluções de Inteligência Artificial para automatizar processos, otimizar atendimentos, gerar produtividade e apoiar a tomada de decisões com mais agilidade e inteligência.</p>
-            </div>
-
-            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgAutomacao})` }}>
-              <Code size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Automação de Processos</h3>
-              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Reduzimos tarefas manuais por meio de integrações e automações que conectam sistemas, equipes e informações, permitindo que sua empresa trabalhe de forma mais eficiente.</p>
-            </div>
-
-            <div className="hexagon-card service-card has-bg" style={{ backgroundImage: `url(${imgConsultoria})` }}>
-              <Share2 size={34} className="text-gradient-buzz" style={{ marginBottom: '1.2rem' }} />
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.4rem', marginBottom: '1rem', color: '#ffffff' }}>Consultorias e Treinamentos</h3>
-              <p style={{ color: '#f0f0f0', fontSize: '0.85rem', lineHeight: '1.5' }}>Capacitamos equipes e acompanhamos a implementação de estratégias para que Marketing e Vendas atuem de forma integrada, utilizando processos, ferramentas e tecnologia como aliados do crescimento.</p>
-            </div>
+            {servicosData.map((servico) => {
+              const IconComponent = servico.icon;
+              return (
+                <div 
+                  key={servico.id} 
+                  className="hexagon-card service-card has-bg" 
+                  style={{ backgroundImage: `url(${servico.img})` }}
+                  onClick={() => setSelectedService(servico)}
+                >
+                  <div className="service-card-clean-box">
+                    <IconComponent size={34} className="text-gradient-buzz" style={{ marginBottom: '0.6rem' }} />
+                    <h3 className="service-card-title">{servico.title}</h3>
+                    <button 
+                      type="button"
+                      className="service-expand-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedService(servico);
+                      }}
+                      aria-label={`Ver detalhes de ${servico.title}`}
+                    >
+                      <span>Saiba Mais</span>
+                      <ArrowRight size={14} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="section-nav">
@@ -505,9 +544,10 @@ function App() {
       <section className="metodo" id="metodo" ref={metodoRef}>
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Por que o Método Colmeia?</span>
-            <h2 className="section-title">O Método Colmeia</h2>
-            <p className="section-desc">Grandes resultados não acontecem por acaso. Eles são construídos por meio de estratégia, organização e execução consistente. O Método Colmeia é a metodologia exclusiva da Buzz para integrar Marketing, Vendas, CRM e Inteligência Artificial em um único processo.</p>
+            <h2 className="section-title text-gradient-buzz">O Método Colmeia</h2>
+            <p className="section-desc">
+              O Método Colmeia é a metodologia exclusiva da Buzz para integrar Marketing, Vendas, CRM e Inteligência Artificial em um único processo.
+            </p>
           </div>
 
           <div className="metodo-timeline">
@@ -537,9 +577,17 @@ function App() {
               </div>
             ))}
           </div>
+
+          {/* Fechamento do Método Colmeia */}
+          <div className="metodo-conclusion-box">
+            <span className="section-tag" style={{ color: '#ffffff', marginBottom: '0.8rem' }}>Por que o Método Colmeia?</span>
+            <p className="metodo-conclusion-text">
+              Grandes resultados não acontecem por acaso. Eles são construídos por meio de estratégia, organização e execução consistente.
+            </p>
+          </div>
         </div>
         <div className="section-nav">
-          <a href="#servicos" className="scroll-up-btn" aria-label="Voltar para Soluções">
+          <a href="#servicos" className="scroll-up-btn" aria-label="Voltar para Serviços">
             <ChevronUp size={24} />
           </a>
           <a href="#planos" className="scroll-down-btn" aria-label="Ir para Planos">
@@ -958,6 +1006,44 @@ function App() {
       >
         <i className="ri-whatsapp-line" style={{ fontSize: '24px' }}></i>
       </a>
+
+      {/* MODAL DE DETALHES DO SERVIÇO */}
+      {selectedService && (
+        <div className="service-modal-overlay" onClick={() => setSelectedService(null)}>
+          <div className="service-modal-card" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="service-modal-close" 
+              onClick={() => setSelectedService(null)}
+              aria-label="Fechar detalhes"
+            >
+              <X size={20} />
+            </button>
+            <div className="service-modal-header">
+              {React.createElement(selectedService.icon, { size: 36, className: 'text-gradient-buzz' })}
+              <h3>{selectedService.title}</h3>
+            </div>
+            <p className="service-modal-desc">{selectedService.desc}</p>
+            <div className="service-modal-actions">
+              <a 
+                href="#contato" 
+                className="btn btn-primary"
+                onClick={() => {
+                  setSelectedService(null);
+                  if (window.lenis) {
+                    const target = document.querySelector('#contato');
+                    if (target) window.lenis.scrollTo(target, { offset: -70, duration: 1.0 });
+                  }
+                }}
+              >
+                Agendar Diagnóstico <Rocket size={16} />
+              </a>
+              <button className="btn btn-secondary" onClick={() => setSelectedService(null)}>
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
