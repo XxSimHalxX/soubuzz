@@ -435,7 +435,7 @@ function App() {
             <li><a href="#home" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</a></li>
             <li><a href="#servicos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Serviços</a></li>
             <li><a href="#metodo" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Método Colmeia</a></li>
-            <li><a href="#planos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Planos</a></li>
+            <li><a href="#planos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Soluções</a></li>
             <li><a href="#blog" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Blog</a></li>
             <li><a href="#quem-somos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Quem Somos</a></li>
             <li><a href="#contato" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Contato</a></li>
@@ -600,9 +600,8 @@ function App() {
       <section className="portfolio" id="planos" ref={planosRef}>
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Soluções</span>
-            <h2 className="section-title">Soluções Estruturadas</h2>
-            <p className="section-desc">Cada empresa está em um momento diferente de crescimento. Por isso, desenvolvemos soluções estruturadas que combinam estratégia, execução e acompanhamento para transformar desafios em resultados concretos.</p>
+            <h2 className="section-title text-gradient-buzz">Soluções Estruturadas</h2>
+            <p className="section-desc">Cada empresa está em um momento diferente de crescimento.<br />Por isso, desenvolvemos soluções estruturadas que combinam estratégia, execução e acompanhamento para transformar desafios em resultados concretos.</p>
           </div>
 
           <div className="metodo-timeline">
@@ -614,8 +613,8 @@ function App() {
                 </div>
               </div>
               <div className="plano-step-text">
-                <span className="section-tag" style={{ fontSize: '0.75rem' }}>O primeiro passo</span>
-                <h3>Plano Semente</h3>
+                <span className="section-tag" style={{ fontSize: '0.75rem', color: '#ffffff' }}>O primeiro passo</span>
+                <h3 className="text-gradient-buzz">Plano Semente</h3>
                 <p>Ideal para negócios que precisam estruturar Marketing e Vendas antes de acelerar o crescimento. Em 30 dias, realizamos um diagnóstico completo, definimos objetivos, construímos um plano de ação e entregamos uma estratégia personalizada.</p>
                 <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
                   <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Indicado para iniciar o crescimento com organização.</li>
@@ -633,8 +632,8 @@ function App() {
                 </div>
               </div>
               <div className="plano-step-text">
-                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Planejamento e Execução</span>
-                <h3>Projeto Colheita</h3>
+                <span className="section-tag" style={{ fontSize: '0.75rem', color: '#ffffff' }}>Planejamento e Execução</span>
+                <h3 className="text-gradient-buzz">Projeto Colheita</h3>
                 <p>Durante 06 meses, trabalhamos lado a lado com sua empresa para transformar o planejamento em resultados. Integramos Marketing, Comercial, CRM, IA e acompanhamento contínuo para construir processos eficientes e gerar crescimento consistente.</p>
                 <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
                   <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Parceria estratégica focada em evolução.</li>
@@ -652,8 +651,8 @@ function App() {
                 </div>
               </div>
               <div className="plano-step-text">
-                <span className="section-tag" style={{ fontSize: '0.75rem' }}>Evolução Contínua</span>
-                <h3>Plano Safra</h3>
+                <span className="section-tag" style={{ fontSize: '0.75rem', color: '#ffffff' }}>Evolução Contínua</span>
+                <h3 className="text-gradient-buzz">Plano Safra</h3>
                 <p>Planejamento para empresas que querem crescer com previsibilidade. Com acompanhamento de 12 meses, esta solução é voltada para empresas que buscam evolução contínua, organização dos processos e crescimento sustentável.</p>
                 <ul className="modal-list" style={{ margin: '0 0 2rem 0' }}>
                   <li className="modal-list-item"><CheckCircle size={18} className="text-gradient-buzz" /> Estratégias alinhadas aos objetivos da empresa.</li>
@@ -674,32 +673,32 @@ function App() {
         </div>
       </section>
 
-      {/* SEÇÃO BLOG PREMIUM (CARDS HEXAGONAIS) */}
+      {/* SEÇÃO BLOG PREMIUM (CARDS HEXAGONAIS COM BACKGROUND) */}
       <section className="blog" id="blog">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Nossos Artigos</span>
-            <h2 className="section-title">Blog Somos Buzz</h2>
+            <span className="section-tag" style={{ color: '#ffffff' }}>Nossos Artigos</span>
+            <h2 className="section-title text-gradient-buzz">Blog Somos Buzz</h2>
             <p className="section-desc">Estratégias comerciais, tráfego de alta escala e segredos de IA direto da nossa colmeia.</p>
           </div>
 
           <div className="blog-grid">
-            <div className="hexagon-card blog-card">
-              <span className="section-tag" style={{ fontSize: '0.7rem' }}>03 Ago, 2026</span>
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.25rem', margin: '1rem 0', color: '#ffffff', lineHeight: '1.3' }}>IA Comercial Ativa no WhatsApp</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', lineHeight: '1.5' }}>Como integrar IA no WhatsApp para diminuir o tempo de resposta e turbinar a conversão comercial.</p>
+            <div className="hexagon-card blog-card has-bg" style={{ backgroundImage: `url(${imgIA})` }}>
+              <span className="section-tag" style={{ fontSize: '0.7rem', color: '#ffffff' }}>03 Ago, 2026</span>
+              <h3 className="text-gradient-buzz" style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.25rem', margin: '1rem 0', lineHeight: '1.3' }}>IA Comercial Ativa no WhatsApp</h3>
+              <p style={{ color: '#ffffff', fontSize: '0.85rem', lineHeight: '1.5' }}>Como integrar IA no WhatsApp para diminuir o tempo de resposta e turbinar a conversão comercial.</p>
             </div>
 
-            <div className="hexagon-card blog-card">
-              <span className="section-tag" style={{ fontSize: '0.7rem' }}>01 Ago, 2026</span>
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.25rem', margin: '1rem 0', color: '#ffffff', lineHeight: '1.3' }}>Pipelines de Vendas e CRM</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', lineHeight: '1.5' }}>Entenda como organizar etapas claras no seu comercial para evitar a perda de clientes quentes.</p>
+            <div className="hexagon-card blog-card has-bg" style={{ backgroundImage: `url(${imgCrm})` }}>
+              <span className="section-tag" style={{ fontSize: '0.7rem', color: '#ffffff' }}>01 Ago, 2026</span>
+              <h3 className="text-gradient-buzz" style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.25rem', margin: '1rem 0', lineHeight: '1.3' }}>Pipelines de Vendas e CRM</h3>
+              <p style={{ color: '#ffffff', fontSize: '0.85rem', lineHeight: '1.5' }}>Entenda como organizar etapas claras no seu comercial para evitar a perda de clientes quentes.</p>
             </div>
 
-            <div className="hexagon-card blog-card">
-              <span className="section-tag" style={{ fontSize: '0.7rem' }}>28 Jul, 2026</span>
-              <h3 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.25rem', margin: '1rem 0', color: '#ffffff', lineHeight: '1.3' }}>Google Ads vs Meta Ads</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', lineHeight: '1.5' }}>Um comparativo detalhado focado no ROI para marcas premium escalarem seu faturamento.</p>
+            <div className="hexagon-card blog-card has-bg" style={{ backgroundImage: `url(${imgMarketing})` }}>
+              <span className="section-tag" style={{ fontSize: '0.7rem', color: '#ffffff' }}>28 Jul, 2026</span>
+              <h3 className="text-gradient-buzz" style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '1.25rem', margin: '1rem 0', lineHeight: '1.3' }}>Google Ads vs Meta Ads</h3>
+              <p style={{ color: '#ffffff', fontSize: '0.85rem', lineHeight: '1.5' }}>Um comparativo detalhado focado no ROI para marcas premium escalarem seu faturamento.</p>
             </div>
           </div>
         </div>
@@ -713,7 +712,7 @@ function App() {
         </div>
       </section>
 
-      {/* SEÇÃO QUEM SOMOS (MASCOTE EM FAVO HEXAGONAL) */}
+      {/* SEÇÃO QUEM SOMOS (MASCOTE EM FAVO HEXAGONAL + MISSÃO, VISÃO, VALORES E DIFERENCIAIS) */}
       <section className="quem-somos" id="quem-somos" ref={quemSomosRef}>
         <div className="container">
           <div className="about-gallery-grid">
@@ -723,24 +722,73 @@ function App() {
             </div>
 
             <div className="dna-content">
-              <span className="section-tag">Sobre a Buzz</span>
-              <h2 style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '2.5rem', lineHeight: 1.2, marginBottom: '2rem' }}>
-                Mais do que uma empresa de Marketing. Somos parceiros estratégicos para o crescimento do seu negócio.
+              <span className="section-tag" style={{ color: '#ffffff' }}>Sobre a Buzz</span>
+              <h2 style={{ fontFamily: 'var(--font-title)', fontSize: '2.4rem', lineHeight: 1.25, marginBottom: '2rem' }}>
+                <span className="text-gradient-buzz" style={{ fontWeight: 800, display: 'block', marginBottom: '0.35rem' }}>
+                  Mais do que uma Agência de Marketing
+                </span>
+                <span style={{ fontWeight: 400, color: '#ffffff', fontSize: '1.9rem', display: 'block' }}>
+                  um ecossistema de crescimento acelerado
+                </span>
               </h2>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.6, textAlign: 'justify' }}>
                 A Buzz nasceu da percepção de um problema comum em muitas empresas: investir em marketing sem ter um processo comercial estruturado para transformar oportunidades em vendas. Por isso, unimos Marketing Estratégico, Vendas, CRM e Inteligência Artificial para criar soluções que organizam processos, fortalecem equipes e geram crescimento com previsibilidade.
               </p>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.6, textAlign: 'justify' }}>
                 Acreditamos que vender mais não depende apenas de atrair clientes. Depende de estratégia, organização e acompanhamento. Nosso papel é construir esse caminho ao lado de cada empresa, desenvolvendo soluções personalizadas. Porque o crescimento sustentável acontece quando Marketing e Vendas trabalham juntos.
               </p>
+              
               <div className="dna-features" style={{ marginTop: '2rem' }}>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Estratégia antes da execução</div>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Relacionamentos construídos com confiança</div>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Inovação aplicada à realidade do negócio</div>
-                <div className="dna-feature-item"><i className="ri-hexagon-fill" style={{ color: 'var(--accent-primary)', fontSize: '1.2rem', filter: 'drop-shadow(0 0 5px rgba(255,184,0,0.8))' }}></i> Compromisso com resultados e evolução contínua</div>
+                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Estratégia antes da execução</div>
+                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Relacionamentos construídos com confiança</div>
+                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Inovação aplicada à realidade do negócio</div>
+                <div className="dna-feature-item"><CheckCircle size={18} className="text-gradient-buzz" /> Compromisso com resultados e evolução contínua</div>
               </div>
             </div>
           </div>
+
+          {/* PILARES OFICIAIS DO BRIEFING: MISSÃO, VISÃO E VALORES */}
+          <div className="quem-somos-pillars-grid">
+            <div className="pillar-card">
+              <span className="section-tag" style={{ color: '#ffffff', marginBottom: '0.8rem' }}>Propósito</span>
+              <h3 className="text-gradient-buzz">Missão</h3>
+              <p>Conectar empresas a novas oportunidades por meio de estratégias de marketing personalizadas, organização dos processos comerciais e aplicação prática de inteligência artificial, impulsionando vendas, eficiência e resultados sustentáveis.</p>
+            </div>
+
+            <div className="pillar-card">
+              <span className="section-tag" style={{ color: '#ffffff', marginBottom: '0.8rem' }}>Futuro</span>
+              <h3 className="text-gradient-buzz">Visão</h3>
+              <p>Ser referência em soluções que unem marketing, vendas e tecnologia, transformando a forma como empresas estruturam seus processos comerciais e geram crescimento com previsibilidade.</p>
+            </div>
+
+            <div className="pillar-card">
+              <span className="section-tag" style={{ color: '#ffffff', marginBottom: '0.8rem' }}>Princípios</span>
+              <h3 className="text-gradient-buzz">Valores</h3>
+              <ul className="pillar-values-list">
+                <li><CheckCircle size={15} className="text-gradient-buzz" /> Estratégia antes da execução</li>
+                <li><CheckCircle size={15} className="text-gradient-buzz" /> Relacionamentos baseados em confiança</li>
+                <li><CheckCircle size={15} className="text-gradient-buzz" /> Inovação com aplicação prática</li>
+                <li><CheckCircle size={15} className="text-gradient-buzz" /> Foco em crescimento sustentável</li>
+                <li><CheckCircle size={15} className="text-gradient-buzz" /> Compromisso com evolução contínua</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* POR QUE A BUZZ & NOSSO DIFERENCIAL */}
+          <div className="quem-somos-manifesto-grid">
+            <div className="manifesto-card">
+              <span className="section-tag" style={{ color: '#ffffff', marginBottom: '0.8rem' }}>Razão de Existir</span>
+              <h3 className="text-gradient-buzz">Por que a Buzz?</h3>
+              <p>Porque atrair clientes é apenas o primeiro passo. O verdadeiro resultado acontece quando o marketing gera oportunidades qualificadas e o comercial está preparado para transformá-las em vendas. A Buzz existe para unir esses dois lados, criando uma estrutura eficiente, previsível e pronta para crescer.</p>
+            </div>
+
+            <div className="manifesto-card">
+              <span className="section-tag" style={{ color: '#ffffff', marginBottom: '0.8rem' }}>Vantagem Competitiva</span>
+              <h3 className="text-gradient-buzz">Nosso Diferencial</h3>
+              <p>Não entregamos apenas ações isoladas de marketing. Desenvolvemos soluções completas que conectam posicionamento de marca, estruturação comercial, tecnologia e acompanhamento contínuo, garantindo que cada investimento se transforme em evolução real para o seu negócio.</p>
+            </div>
+          </div>
+
         </div>
         <div className="section-nav">
           <a href="#blog" className="scroll-up-btn" aria-label="Voltar para Blog">
@@ -928,7 +976,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="section-nav" style={{ bottom: '-1rem' }}>
+        <div className="section-nav">
           <a href="#quem-somos" className="scroll-up-btn" aria-label="Voltar para Quem Somos">
             <ChevronUp size={24} />
           </a>
